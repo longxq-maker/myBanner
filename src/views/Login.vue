@@ -1,23 +1,158 @@
 <!--login-->
 <template>
   <div id="login">
-    <el-form ref="form" :model="form" class="form" label-width="80px">
-      <el-form-item label="活动名称">
-        <el-input v-model="form.name"></el-input>
+    <el-form
+      :model="form"
+      ref="form"
+      label-width="0"
+      class="form"
+      :rules="rules"
+    >
+      <h3>系统登录</h3>
+      <el-form-item prop="username">
+        <el-input
+          type="text"
+          v-model="form.username"
+          placeholder="请输入用户名"
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+          :type="isPwd"
+          v-model="form.password"
+          placeholder="请输入密码"
+          class="pwd"
+        ></el-input
+        ><i
+          :class="
+            isPwd === 'password' ? 'fa fa-eye-slash fa-lg' : 'fa fa-eye fa-lg'
+          "
+          @click="exchange"
+        ></i>
+      </el-form-item>
+      <el-form-item prop="code">
+        <el-input
+          type="text"
+          v-model="form.code"
+          placeholder="点击图片更换验证码"
+          class="codeInput"
+        ></el-input
+        ><img :src="picUrl" class="codePic" @click="changePic" />
+      </el-form-item>
+      <el-checkbox v-model="isSelected" class="remmberMe">记住我</el-checkbox>
+      <el-form-item class="loginBar">
+        <el-button type="primary" @click="submitForm('form')">登录</el-button
+        ><el-button @click="loginForm">注册</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
+import { Message } from 'element-ui'
+import { postRequest } from '../api/index'
 export default {
   data () {
     return {
       form: {
-        name: ''
+        username: '',
+        password: '',
+        code: ''
+      },
+      // 验证码
+      picUrl: '/captcha?time=' + new Date(),
+      // 是否记住密码
+      isSelected: false,
+      // 变化是否为密码
+      isPwd: 'password',
+      // 图标样式
+      iconStyle: 'fa fa-eye-slash fa-lg',
+      rules: {
+        username: {
+          trigger: 'blur',
+          required: true,
+          message: '用户名或者密码不正确'
+        },
+        password: { required: true, message: '密码不正确', trigger: 'blur' },
+        code: { required: true, message: '请输入验证码', trigger: 'blur' }
       }
     }
   },
-  methods: {}
+  created () {
+    this.getCookie()
+  },
+  mounted () {
+    this.getCookie()
+  },
+  methods: {
+    // 提交表单内容
+    submitForm (form) {
+      // 判断是否通过校验
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          // 通过校验
+          // 提交表单
+          postRequest('/login', this.form).then((res) => {
+            console.log(res)
+            if (res.code === 200) {
+              const tokenStr = res.obj.tokenHead + res.obj.token
+              window.sessionStorage.setItem('tokenStr', tokenStr)
+              this.setcookie(form.username, form.password, 7)
+              this.$router.push('/home')
+            }
+          })
+        } else {
+          this.$message.error('请输入所有字段')
+          return false
+        }
+      })
+      const self = this
+      // 记住密码就对账号和密码存放到cookie中
+      if (this.isSelected) {
+        self.setcookie(self.form.username, self.form.password)
+      }
+    },
+    loginForm () {
+      console.log('注册')
+    },
+    // 改变输入框密码type
+    exchange () {
+      if (this.isPwd === 'password') {
+        this.isPwd = ''
+      } else {
+        this.isPwd = 'password'
+      }
+    },
+    // 设置cookie
+    setcookie (username, pwd, exdays) {
+      console.log(document.cookie)
+      const exdate = new Date()
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays)
+      window.document.cookie =
+        'username=' + username + ';path=/login;expires=' + exdate.toUTCString()
+      window.document.cookie =
+        'password=' + pwd + ';path=/login;expires=' + exdate.toUTCString()
+    },
+    // 获取cookie
+    getCookie () {
+      if (document.cookie.length > 0) {
+        const str = document.cookie
+        const arr = str.split('; ')
+        // console.log(arr)
+        for (let i = 0; i < arr.length; i++) {
+          const newArr = arr[i].split('=')
+          if (newArr[0] === 'username') {
+            this.form.username = newArr[1]
+          } else if (newArr[0] === 'password') {
+            this.form.password = newArr[1]
+          }
+        }
+      }
+    },
+    // 更换验证码图片
+    changePic () {
+      this.picUrl = '/captcha?time=' + new Date()
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -25,7 +160,7 @@ export default {
   /**
    background: var(--bgcolorDay);
    */
-  background: green;
+  background: var(--bgcolorDay);
   width: 100%;
   height: 100%;
   display: flex;
@@ -33,8 +168,43 @@ export default {
   align-items: center;
 }
 .form {
-  width: 300px;
-  height: 400px;
-  background: greenyellow;
+  border-radius: 15px;
+  background-clip: padding-box;
+  width: 350px;
+  padding: 15px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 20px #000;
+  h3 {
+    padding: 10px 0;
+  }
+  .fa {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+  }
+  .code {
+    display: flex;
+    align-items: center;
+  }
+  .codeInput {
+    width: 65%;
+    height: 40px;
+    right: 0;
+    cursor: pointer;
+  }
+  .codePic {
+    position: absolute;
+    display: inline-block;
+    right: 10px;
+    width: 100px;
+    height: 40px;
+  }
+  .remmberMe {
+    margin-bottom: 10px;
+  }
+  .el-button {
+    width: 48%;
+  }
 }
 </style>

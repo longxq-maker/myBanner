@@ -5,14 +5,13 @@ import Login from '../views/Login'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
+const routes = [{
+    path: '/index',
     name: 'Home',
     component: Home
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: Login
   }
