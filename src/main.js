@@ -8,13 +8,24 @@ import element from './element/index'
 // 引入fontawesome
 import 'font-awesome/css/font-awesome.min.css'
 // 引入axios拦截请求
-// import './api/index'
+import {
+  postRequest,
+  getRequest,
+  putRequest,
+  deleteRequest
+} from './api/index'
+
 // 配置axios默认url
 // axios.defaults.baseURL = 'http://localhost:8081'
 // Vue.prototype.$http = axios
 
 Vue.use(element)
 Vue.config.productionTip = false
+
+Vue.prototype.postRequest = postRequest
+Vue.prototype.getRequest = getRequest
+Vue.prototype.putRequest = putRequest
+Vue.prototype.deleteRequest = deleteRequest
 
 new Vue({
   router,

@@ -1,6 +1,12 @@
 <!--login-->
 <template>
-  <div id="login">
+  <div
+    id="login"
+    v-loading="loading"
+    element-loading-text="正在加载..."
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <el-form
       :model="form"
       ref="form"
@@ -48,8 +54,6 @@
   </div>
 </template>
 <script>
-import { Message } from 'element-ui'
-import { postRequest } from '../api/index'
 export default {
   data () {
     return {
@@ -58,6 +62,8 @@ export default {
         password: '',
         code: ''
       },
+      // loading加载器
+      loading: false,
       // 验证码
       picUrl: '/captcha?time=' + new Date(),
       // 是否记住密码
@@ -91,13 +97,14 @@ export default {
         if (valid) {
           // 通过校验
           // 提交表单
-          postRequest('/login', this.form).then((res) => {
-            console.log(res)
+          this.loading = true
+          this.postRequest('/login', this.form).then((res) => {
             if (res.code === 200) {
               const tokenStr = res.obj.tokenHead + res.obj.token
               window.sessionStorage.setItem('tokenStr', tokenStr)
               this.setcookie(form.username, form.password, 7)
               this.$router.push('/home')
+              this.loading = false
             }
           })
         } else {
@@ -168,20 +175,20 @@ export default {
   align-items: center;
 }
 .form {
-  border-radius: 15px;
+  border-radius: 0.75rem;
   background-clip: padding-box;
-  width: 350px;
-  padding: 15px 35px 15px 35px;
+  width: 17.5rem;
+  padding: 0.75rem 1.75rem 0.75rem 1.75rem;
   background: #fff;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 20px #000;
+  border: 0.05rem solid #eaeaea;
+  box-shadow: 0 0 1rem #000;
   h3 {
-    padding: 10px 0;
+    padding: 0.5rem 0;
   }
   .fa {
     position: absolute;
-    right: 10px;
-    top: 12px;
+    right: 0.5rem;
+    top: 0.6rem;
   }
   .code {
     display: flex;
@@ -189,19 +196,19 @@ export default {
   }
   .codeInput {
     width: 65%;
-    height: 40px;
+    height: 2rem;
     right: 0;
     cursor: pointer;
   }
   .codePic {
     position: absolute;
     display: inline-block;
-    right: 10px;
-    width: 100px;
-    height: 40px;
+    right: 0.5rem;
+    width: 5rem;
+    height: 2rem;
   }
-  .remmberMe {
-    margin-bottom: 10px;
+  NaNpxmberMe {
+    margin-bottom: 0.5rem;
   }
   .el-button {
     width: 48%;

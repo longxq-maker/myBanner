@@ -4,7 +4,9 @@ import {
   Form,
   FormItem,
   Input,
-  MessageBox
+  MessageBox,
+  Message,
+  Loading
 } from 'element-ui'
 
 const element = {
@@ -15,9 +17,12 @@ const element = {
     Vue.use(FormItem)
     Vue.use(Input)
     Vue.use(Checkbox)
+    Vue.use(Loading.directive)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert
     Vue.prototype.$msgbox = MessageBox
+    Vue.prototype.$loading = Loading.service
+    Vue.prototype.$message = Message
   }
 }
 export default element
