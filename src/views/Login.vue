@@ -102,20 +102,23 @@ export default {
             if (res.code === 200) {
               const tokenStr = res.obj.tokenHead + res.obj.token
               window.sessionStorage.setItem('tokenStr', tokenStr)
-              this.setcookie(form.username, form.password, 7)
               this.$router.push('/home')
+              this.loading = false
+            } else {
               this.loading = false
             }
           })
         } else {
-          this.$message.error('请输入所有字段')
+          // this.$message.error('请输入所有字段')
           return false
         }
       })
-      const self = this
       // 记住密码就对账号和密码存放到cookie中
       if (this.isSelected) {
-        self.setcookie(self.form.username, self.form.password)
+        console.log('isSelected is selected ')
+        this.setcookie(this.form.username, this.form.password, 7)
+        console.log('isSelected finished')
+        console.log(document.cookie)
       }
     },
     loginForm () {
@@ -131,16 +134,16 @@ export default {
     },
     // 设置cookie
     setcookie (username, pwd, exdays) {
-      console.log(document.cookie)
       const exdate = new Date()
       exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays)
       window.document.cookie =
-        'username=' + username + ';path=/login;expires=' + exdate.toUTCString()
+        'username=' + username + ';path=/;expires=' + exdate.toUTCString()
       window.document.cookie =
-        'password=' + pwd + ';path=/login;expires=' + exdate.toUTCString()
+        'password=' + pwd + ';path=/;expires=' + exdate.toUTCString()
     },
     // 获取cookie
     getCookie () {
+      console.log(document.cookie)
       if (document.cookie.length > 0) {
         const str = document.cookie
         const arr = str.split('; ')

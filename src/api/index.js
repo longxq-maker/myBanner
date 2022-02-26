@@ -25,8 +25,7 @@ axios.interceptors.response.use(success => {
       Message.error({
         message: `${success.data.message}`
       })
-    }
-    if (success.data.message) {
+    } else if (success.data.message) {
       Message.success({
         message: success.data.message
       })
