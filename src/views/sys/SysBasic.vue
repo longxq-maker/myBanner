@@ -6,7 +6,9 @@
       <el-tab-pane label="职位管理" name="PosManage">
         <pos-manage></pos-manage>
       </el-tab-pane>
-      <el-tab-pane label="职称管理" name="JobManage">职称管理</el-tab-pane>
+      <el-tab-pane label="职称管理" name="JobManage">
+        <job-manage></job-manage>
+      </el-tab-pane>
       <el-tab-pane label="奖惩规则" name="EcManage">奖惩规则</el-tab-pane>
       <el-tab-pane label="权限组" name="PermissManage">权限组</el-tab-pane>
     </el-tabs>
@@ -21,7 +23,7 @@ import PosManage from '../../components/sys/base/PosManage.vue'
 export default {
   data () {
     return {
-      activeName: 'depManage'
+      activeName: 'JobManage'
     }
   },
   methods: {},

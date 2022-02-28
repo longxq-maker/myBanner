@@ -27,7 +27,10 @@ import {
   TableColumn,
   Row,
   Dialog,
-  Tag
+  Tag,
+  Select,
+  Option,
+  OptionGroup
 } from 'element-ui'
 
 const element = {
@@ -60,6 +63,9 @@ const element = {
     Vue.use(Row)
     Vue.use(Dialog)
     Vue.use(Tag)
+    Vue.use(Select)
+    Vue.use(Option)
+    Vue.use(OptionGroup)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert
     Vue.prototype.$msgbox = MessageBox

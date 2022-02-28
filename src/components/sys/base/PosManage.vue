@@ -104,7 +104,6 @@ export default {
     // 获取职位信息
     async getData () {
       this.tableData = await this.getRequest('/system/basic/pos/')
-      console.log(this.tableData)
       if (!this.tableData) {
         return this.$message.error({
           message: '获取职位信息失败'
