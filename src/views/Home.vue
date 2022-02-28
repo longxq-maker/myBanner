@@ -71,7 +71,6 @@
 export default {
   data () {
     return {
-      // iconColor: ['#00C5CD', '#7FFFD4', '#54FF9F', '#00FF00', '#CAFF70'],
       user: JSON.parse(window.sessionStorage.getItem('user'))
     }
   },
