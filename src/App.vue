@@ -11,6 +11,10 @@
   */
   --bgcolorDark: #000;
   --bgcolorDay: #fff;
+  --color1: #00c5cd;
+  --color2: #7fffd4;
+  --color3: #00ff00;
+  --color4: #caff70;
 }
 * {
   padding: 0;

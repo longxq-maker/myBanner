@@ -14,6 +14,9 @@ axios.interceptors.request.use(config => {
   if (window.sessionStorage.getItem('tokenStr')) {
     nprogress.start()
     config.headers.Authorization = window.sessionStorage.getItem('tokenStr')
+  } else {
+    // 不存在token 跳转到登录页面
+    router.replace('/')
   }
   return config
 }, error => {
@@ -36,9 +39,6 @@ axios.interceptors.response.use(success => {
   }
   return success.data
 }, error => {
-  console.log('---error code ---')
-  console.log(error)
-  console.log(error.response)
   if (error.response.code === 504 || error.response.code === 404) {
     Message.error({
       message: '服务器被吃了o(╯□╰)o'

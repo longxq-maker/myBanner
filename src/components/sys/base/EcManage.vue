@@ -1,9 +1,10 @@
-<!--test1-->
+<!--职称管理-->
 <template>
-  <div>test1</div>
+  <div>职称管理</div>
 </template>
 <script>
 export default {
+  name: '职称管理',
   data () {
     return {}
   },

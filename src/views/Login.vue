@@ -47,7 +47,11 @@
       </el-form-item>
       <el-checkbox v-model="isSelected" class="remmberMe">记住我</el-checkbox>
       <el-form-item class="loginBar">
-        <el-button type="primary" @click="submitForm('form')">登录</el-button
+        <el-button
+          type="primary"
+          @click="submitForm('form')"
+          @keydown.enter.native="submitForm('form')"
+          >登录</el-button
         ><el-button @click="loginForm">注册</el-button>
       </el-form-item>
     </el-form>
@@ -105,7 +109,6 @@ export default {
               const path = this.$route.query.redirect
               console.log('---path---')
               console.log(path)
-              // this.$router.replace('/home')
               this.$router.replace(
                 path === '/' || path === undefined ? '/home' : path
               )

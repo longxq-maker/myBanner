@@ -35,34 +35,35 @@ Vue.prototype.deleteRequest = deleteRequest
 
 // 全局路由守卫
 router.beforeEach((to, from, next) => {
-  const getToken = window.sessionStorage.getItem('tokenStr')
-  console.log(getToken)
-  if (!getToken) {
-    // 用户未登录
-    console.log('用户未登录')
-    if (to.path === '/') {
-      next()
-    } else {
-      console.log('开始重定向')
-      console.log(to.path)
-      next('/?redirect=' + to.path)
-    }
-  } else {
-    // 初始化菜单
+  const tokenStr = window.sessionStorage.getItem('tokenStr')
+  console.log('全局导航守卫')
+  console.log(!!tokenStr)
+  if (window.sessionStorage.getItem('tokenStr')) {
     initMenu(router, store)
     // 判断用户信息是否存在
     if (!window.sessionStorage.getItem('user')) {
-      // 用户信息不存在
-      // 获取用户信息
       return getRequest('/admin/info').then(resp => {
         if (resp) {
           window.sessionStorage.setItem('user', JSON.stringify(resp))
+          // const path = route.query.redirect
           // console.log(path)
+          // router.replace((path === '/' || path === undefined) ? '/home' : path)
           next()
+        } else {
+          router.replace('/')
         }
       })
     } else {
       // 用户信息存在
+      next()
+    }
+  } else {
+    // 用户没有登录
+    // todo:修复输入路由直接跳转到登录页面
+    console.log('用户没有登录')
+    if (to.path !== '/') {
+      next('/?redirect=' + to.path)
+    } else {
       next()
     }
   }
