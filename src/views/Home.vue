@@ -49,7 +49,9 @@
               >首页</el-breadcrumb-item
             >
             <el-breadcrumb-item
-              ><a href="/emp/basic">基本资料</a></el-breadcrumb-item
+              ><a href="/emp/basic">{{
+                this.$route.name
+              }}</a></el-breadcrumb-item
             >
           </el-breadcrumb>
           <div class="bgStyle" v-if="this.$route.path === '/home'">
@@ -155,6 +157,10 @@ export default {
   display: block;
   margin-top: 30px;
 }
+//面包屑样式
+.el-breadcrumb {
+  margin: 20px;
+}
 .el-aside {
   background-color: #fff;
   color: #333;
@@ -164,13 +170,9 @@ export default {
 .el-container {
   background: #fff;
   color: #ccc;
-  text-align: center;
   line-height: 100%;
 }
 .el-main {
   padding: 0;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
 }
 </style>

@@ -19,7 +19,15 @@ import {
   DropdownItem,
   DropdownMenu,
   Breadcrumb,
-  BreadcrumbItem
+  BreadcrumbItem,
+  Tabs,
+  TabPane,
+  Icon,
+  Table,
+  TableColumn,
+  Row,
+  Dialog,
+  Tag
 } from 'element-ui'
 
 const element = {
@@ -44,6 +52,14 @@ const element = {
     Vue.use(Breadcrumb)
     Vue.use(BreadcrumbItem)
     Vue.use(Loading.directive)
+    Vue.use(Tabs)
+    Vue.use(TabPane)
+    Vue.use(Icon)
+    Vue.use(Table)
+    Vue.use(TableColumn)
+    Vue.use(Row)
+    Vue.use(Dialog)
+    Vue.use(Tag)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert
     Vue.prototype.$msgbox = MessageBox
