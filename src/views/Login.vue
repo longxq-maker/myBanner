@@ -102,7 +102,13 @@ export default {
             if (res.code === 200) {
               const tokenStr = res.obj.tokenHead + res.obj.token
               window.sessionStorage.setItem('tokenStr', tokenStr)
-              this.$router.push('/home')
+              const path = this.$route.query.redirect
+              console.log('---path---')
+              console.log(path)
+              // this.$router.replace('/home')
+              this.$router.replace(
+                path === '/' || path === undefined ? '/home' : path
+              )
               this.loading = false
             } else {
               this.loading = false
@@ -122,7 +128,9 @@ export default {
       }
     },
     loginForm () {
+      // todo 注册功能实现
       console.log('注册')
+      // todo 实现键盘enter登录
     },
     // 改变输入框密码type
     exchange () {

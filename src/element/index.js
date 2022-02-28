@@ -6,7 +6,20 @@ import {
   Input,
   MessageBox,
   Message,
-  Loading
+  Loading,
+  Container,
+  Header,
+  Aside,
+  Main,
+  Menu,
+  Submenu,
+  MenuItem,
+  MenuItemGroup,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Breadcrumb,
+  BreadcrumbItem
 } from 'element-ui'
 
 const element = {
@@ -17,6 +30,19 @@ const element = {
     Vue.use(FormItem)
     Vue.use(Input)
     Vue.use(Checkbox)
+    Vue.use(Container)
+    Vue.use(Header)
+    Vue.use(Aside)
+    Vue.use(Main)
+    Vue.use(Menu)
+    Vue.use(Submenu)
+    Vue.use(MenuItem)
+    Vue.use(MenuItemGroup)
+    Vue.use(Dropdown)
+    Vue.use(DropdownMenu)
+    Vue.use(DropdownItem)
+    Vue.use(Breadcrumb)
+    Vue.use(BreadcrumbItem)
     Vue.use(Loading.directive)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert

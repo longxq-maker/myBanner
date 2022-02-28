@@ -5,10 +5,14 @@ import {
 
 import router from '../router'
 
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 // 请求拦截器
 axios.interceptors.request.use(config => {
   // 如果存在token请求携带token
   if (window.sessionStorage.getItem('tokenStr')) {
+    nprogress.start()
     config.headers.Authorization = window.sessionStorage.getItem('tokenStr')
   }
   return config
@@ -18,8 +22,7 @@ axios.interceptors.request.use(config => {
 
 // 配置axios响应拦截
 axios.interceptors.response.use(success => {
-  console.log('---success data---')
-  console.log(success.data)
+  nprogress.done()
   if (success.status && success.status === 200) {
     if (success.data.code === 500 || success.data.code === 401 || success.data.code === 403) {
       Message.error({
