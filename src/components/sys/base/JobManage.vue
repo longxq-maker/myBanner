@@ -1,6 +1,6 @@
 <!--职位管理-->
 <template>
-  <div>
+  <div id="jobLevel">
     <div>
       <el-input
         v-model="joblev.name"
@@ -24,12 +24,17 @@
     </div>
     <body>
       <el-table
+        fit
         lazy
         border
         :data="options"
         stripe
+        @selection-change="handleSelectionChange"
         style="width: 100%; margin: 20px 20px"
-        ><el-table-column
+      >
+        <el-table-column type="selection" width="40"></el-table-column>
+        <el-table-column
+          resizable
           prop="id"
           align="center"
           type="index"
@@ -37,7 +42,13 @@
           width="50"
         >
         </el-table-column>
-        <el-table-column prop="id" align="center" label="编号" width="50">
+        <el-table-column
+          resizable
+          prop="id"
+          align="center"
+          label="编号"
+          width="50"
+        >
         </el-table-column>
         <el-table-column
           prop="name"
@@ -53,6 +64,8 @@
           resizable
           label="职称等级"
           width="150"
+          type="button"
+          style="user-select: none; cursor: pointer"
         >
         </el-table-column>
         <el-table-column
@@ -99,6 +112,50 @@
         </el-table-column>
       </el-table>
     </body>
+    <footer class="foot">
+      <el-button
+        type="danger"
+        @click="multDelete"
+        :disabled="this.multipleSelection.length === 0 ? true : false"
+        >批量删除</el-button
+      >
+    </footer>
+    <!--编辑内容弹出框-->
+    <el-dialog title="编辑职称" :visible.sync="dialogFormVisible">
+      <el-form :model="updataInfo">
+        <el-form-item size="small" label="职称等级" style="width: 400px">
+          <el-input v-model="updataInfo.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="职称等级">
+          <el-select
+            size="small"
+            style="width: 200px"
+            v-model="updataInfo.titleLevel"
+          >
+            <el-option
+              v-for="item in levels"
+              :key="item.index"
+              :label="item"
+              :value="item"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否启用" size="small">
+          <el-switch
+            v-model="updataInfo.enabled"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="已启用"
+            inactive-text="未启用"
+          >
+          </el-switch>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="toUpdateInfo">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -111,7 +168,15 @@ export default {
         jobLevel: ''
       },
       levels: ['初级', '中级', '正高级', '副高级'],
-      options: []
+      options: [],
+      dialogFormVisible: false,
+      updataInfo: {
+        name: '',
+        titleLevel: '',
+        enabled: false
+      },
+      // 批量删除存放序号
+      multipleSelection: []
     }
   },
   created () {
@@ -131,6 +196,8 @@ export default {
         this.postRequest('/system/basic/joblevel/', this.joblev).then((res) => {
           if (res.code === 200) {
             this.getOptions()
+            this.joblev.name = ''
+            this.joblev.jobLevel = ''
           }
         })
       } else {
@@ -138,10 +205,87 @@ export default {
       }
     },
     // 编辑等级
-    handleEdit () {},
+    handleEdit (index, data) {
+      this.dialogFormVisible = true
+      Object.assign(this.updataInfo, data)
+      this.updataInfo.createDate = ''
+    },
+    // 确认提交编辑等级内容
+    toUpdateInfo () {
+      // 发送请求修改内容
+      this.putRequest('/system/basic/joblevel/', this.updataInfo).then(
+        (res) => {
+          // 更新表格
+          this.getOptions()
+        }
+      )
+      this.dialogFormVisible = false
+    },
+    // 选中则将对应的index放入multipleSelection
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
     // 删除
-    handleDelete () {}
+    handleDelete (index, data) {
+      console.log(data)
+      this.$confirm(`此操作将永久删除--> ${data.name} <--, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.deleteRequest(`/system/basic/joblevel/${data.id}`).then(
+            (res) => {
+              if (res.code === 200) {
+                this.getOptions()
+              }
+            }
+          )
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    // 批量删除
+    multDelete () {
+      this.$confirm(
+        '此操作将永久删除' + this.multipleSelection.length + '个职位是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      )
+        .then(() => {
+          let str = '?'
+          this.multipleSelection.forEach((item) => (str += `ids=${item.id}&`))
+          this.deleteRequest('/system/basic/joblevel/' + str).then((res) => {
+            if (res.code === 200) {
+              this.getOptions()
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    }
   }
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.el-form-item {
+  display: flex;
+}
+
+.foot {
+  display: flex;
+  margin: 0 0 20px 20px;
+}
+</style>

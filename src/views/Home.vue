@@ -87,9 +87,11 @@ export default {
   methods: {
     getUser () {
       const res = JSON.parse(window.sessionStorage.getItem('user'))
-      console.log(res.userFace)
-      console.log('---$router---')
-      console.log(this.$router)
+      console.log(res)
+      this.$store.dispatch('currentUser', res.name)
+      this.$store.dispatch('isLogin', true)
+      console.log('---store---')
+      console.log(this.$store.state)
     },
     handleCommand (command) {
       if (command === 'Logout') {

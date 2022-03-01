@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    routes: []
+    routes: [],
+    currentUser: null,
+    isLogin: false,
+    token: ''
   },
   mutations: {
     initRoutes(state, data) {

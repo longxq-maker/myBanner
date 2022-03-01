@@ -2,15 +2,21 @@
 <template>
   <div>
     <el-tabs v-model="activeName" type="card">
-      <el-tab-pane label="部门管理" name="depManage">部门管理</el-tab-pane>
+      <el-tab-pane label="部门管理" name="depManage"
+        ><dep-manage></dep-manage
+      ></el-tab-pane>
       <el-tab-pane label="职位管理" name="PosManage">
         <pos-manage></pos-manage>
       </el-tab-pane>
       <el-tab-pane label="职称管理" name="JobManage">
         <job-manage></job-manage>
       </el-tab-pane>
-      <el-tab-pane label="奖惩规则" name="EcManage">奖惩规则</el-tab-pane>
-      <el-tab-pane label="权限组" name="PermissManage">权限组</el-tab-pane>
+      <el-tab-pane label="奖惩规则" name="EcManage"
+        ><ec-manage></ec-manage
+      ></el-tab-pane>
+      <el-tab-pane label="权限组" name="PermissManage"
+        ><permiss-manage></permiss-manage
+      ></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -23,7 +29,7 @@ import PosManage from '../../components/sys/base/PosManage.vue'
 export default {
   data () {
     return {
-      activeName: 'JobManage'
+      activeName: 'PermissManage'
     }
   },
   methods: {},
@@ -39,5 +45,8 @@ export default {
 <style lang="less" scoped>
 .el-tabs__nav {
   background: var(--color1);
+}
+.el-tabs {
+  margin: 0 20px;
 }
 </style>

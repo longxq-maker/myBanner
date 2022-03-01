@@ -106,9 +106,8 @@ export default {
             if (res.code === 200) {
               const tokenStr = res.obj.tokenHead + res.obj.token
               window.sessionStorage.setItem('tokenStr', tokenStr)
+              this.$store.dispatch('token', res.obj.token)
               const path = this.$route.query.redirect
-              console.log('---path---')
-              console.log(path)
               this.$router.replace(
                 path === '/' || path === undefined ? '/home' : path
               )
@@ -124,10 +123,7 @@ export default {
       })
       // 记住密码就对账号和密码存放到cookie中
       if (this.isSelected) {
-        console.log('isSelected is selected ')
         this.setcookie(this.form.username, this.form.password, 7)
-        console.log('isSelected finished')
-        console.log(document.cookie)
       }
     },
     loginForm () {
@@ -154,11 +150,11 @@ export default {
     },
     // 获取cookie
     getCookie () {
-      console.log(document.cookie)
       if (document.cookie.length > 0) {
         const str = document.cookie
         const arr = str.split('; ')
         // console.log(arr)
+        console.log(str)
         for (let i = 0; i < arr.length; i++) {
           const newArr = arr[i].split('=')
           if (newArr[0] === 'username') {
