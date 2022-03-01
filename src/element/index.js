@@ -36,7 +36,8 @@ import {
   Switch,
   Collapse,
   CollapseItem,
-  Tree
+  Tree,
+  Card
 } from 'element-ui'
 
 const element = {
@@ -78,6 +79,7 @@ const element = {
     Vue.use(Collapse)
     Vue.use(CollapseItem)
     Vue.use(Tree)
+    Vue.use(Card)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert
     Vue.prototype.$msgbox = MessageBox
