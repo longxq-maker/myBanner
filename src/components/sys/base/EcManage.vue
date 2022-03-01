@@ -4,7 +4,7 @@
 </template>
 <script>
 export default {
-  name: '职称管理',
+  name: 'EcManage',
   data () {
     return {}
   },

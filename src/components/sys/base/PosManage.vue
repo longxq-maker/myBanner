@@ -20,7 +20,7 @@
       lazy
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"> </el-table-column>
+      <el-table-column type="selection" width="40"> </el-table-column>
       <el-table-column type="index" align="center" label="序号" width="50">
       </el-table-column>
       <el-table-column align="center" prop="id" label="代码" width="100">
@@ -104,7 +104,6 @@ export default {
     // 获取职位信息
     async getData () {
       this.tableData = await this.getRequest('/system/basic/pos/')
-      console.log(this.tableData)
       if (!this.tableData) {
         return this.$message.error({
           message: '获取职位信息失败'
@@ -161,7 +160,6 @@ export default {
     },
     // 批量删除按钮
     async multDelet () {
-      console.log('批量删除')
       this.$confirm(
         '此操作将永久删除' + this.multipleSelection.length + '个职位是否继续?',
         '提示',

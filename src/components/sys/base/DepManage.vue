@@ -4,7 +4,7 @@
 </template>
 <script>
 export default {
-  name: '部门管理',
+  name: 'DepManage',
   data () {
     return {}
   },

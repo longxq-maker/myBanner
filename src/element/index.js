@@ -27,7 +27,16 @@ import {
   TableColumn,
   Row,
   Dialog,
-  Tag
+  Tag,
+  Select,
+  Option,
+  OptionGroup,
+  Footer,
+  Pagination,
+  Switch,
+  Collapse,
+  CollapseItem,
+  Tree
 } from 'element-ui'
 
 const element = {
@@ -60,11 +69,21 @@ const element = {
     Vue.use(Row)
     Vue.use(Dialog)
     Vue.use(Tag)
+    Vue.use(Select)
+    Vue.use(Option)
+    Vue.use(OptionGroup)
+    Vue.use(Footer)
+    Vue.use(Pagination)
+    Vue.use(Switch)
+    Vue.use(Collapse)
+    Vue.use(CollapseItem)
+    Vue.use(Tree)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert
     Vue.prototype.$msgbox = MessageBox
     Vue.prototype.$loading = Loading.service
     Vue.prototype.$message = Message
+    Vue.prototype.$prompt = MessageBox.prompt
   }
 }
 export default element
