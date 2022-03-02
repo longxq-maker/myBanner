@@ -1,4 +1,11 @@
-<!--部门管理-->
+<!--
+ * @Description:部门管理
+ * @Author: longxq
+ * @Date: 2022-02-28 21:37:02
+ * @LastEditTime: 2022-03-03 00:09:28
+ * @LastEditors: longxq
+ * @Reference:
+-->
 <template>
   <div>
     <el-input placeholder="输入关键字进行过滤" v-model="filterText"> </el-input>
@@ -49,7 +56,7 @@
               <el-input
                 size="small"
                 autofocus
-                v-model="addDepsInfo.name"
+                v-model="depsInfo.name"
                 placeholder="请输入部门名称..."
               ></el-input>
             </td>
@@ -76,7 +83,7 @@ export default {
         children: 'children',
         label: 'name'
       },
-      addDepsInfo: {
+      depsInfo: {
         parentId: -1,
         name: ''
       },
@@ -92,68 +99,130 @@ export default {
     this.initDeps()
   },
   methods: {
-    // 筛选节点
+    /**
+     * @name: 节点筛选
+     * @test:
+     * @msg:
+     * @param {*} value
+     * @param {*} data
+     * @return {*}
+     */
     filterNode (value, data) {
       if (!value) return true
       return data.name.indexOf(value) !== -1
     },
-    // 初始化数据
+    /**
+     * @name: 初始化数据
+     * @test:
+     * @msg:
+     * @param {*}
+     * @return {*}
+     */
     initDeps () {
       this.getRequest('/system/basic/department/').then((res) => {
         if (res) {
+          // console.log('---getRequest的res---')
+          // console.log(res)
           this.deps = res
         }
       })
     },
-    // 添加/删除部门
+    /**
+     * @name:添加/删除部门
+     * @test:
+     * @msg:
+     * @param {*} data
+     * @return {*}
+     */
     showDep (data) {
       this.pname = data.name
-      this.addDepsInfo.parentId = data.id
+      this.depsInfo.parentId = data.id
       this.dialogVisible = true
     },
-    // 添加后清空弹出框内容
+    /**
+     * @name:添加后清空弹出框内容
+     * @test:
+     * @msg:
+     * @param {*}
+     * @return {*}
+     */
     initDep () {
-      this.addDepsInfo = {
+      this.depsInfo = {
         name: '',
         parentId: -1
       }
       this.pname = ''
     },
-    // 执行添加操作
+    /**
+     * @name:  执行添加操作
+     * @test:
+     * @msg:
+     * @param {*}
+     * @return {*}
+     */
     doAddDep () {
-      this.postRequest('/system/basic/department/', this.addDepsInfo).then(
-        (res) => {
-          console.log(res)
+      this.postRequest('/system/basic/department/', this.depsInfo)
+        .then((res) => {
           // 将添加内容添加到deps中
-          this.initDep()
-          const result = this.addDep2Deps(this.deps, res.obj)
-          if (!result) {
+          this.addDep2Deps(this.deps, res.obj)
+          console.log('res.obj')
+          console.log(res.obj)
+          if (this.deps === null) {
+            this.deps = []
+          } else {
+            console.log('this.deps === null ?')
+            console.log(this.deps === null)
+            this.initDep()
             this.dialogVisible = false
           }
-        }
-      )
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
-    // 将dep加到deps中
+    /**
+     * @name: 将dep加到deps中
+     * @test:
+     * @msg:
+     * @param {*} deps
+     * @param {*} dep
+     * @return {*}
+     */
     addDep2Deps (deps, dep) {
-      for (let i = 0; i < deps.length; i++) {
-        const d = deps[i]
-        if (d.id === dep.parentId) {
-          d.children = d.children.concat(dep)
-          if (d.children.length > 0) {
-            d.isParent = true
+      console.log('deps.length')
+      console.log(typeof deps)
+      console.log('---deps---')
+      console.log(deps)
+      if (deps !== null) {
+        for (let i = 0; i < deps.length; i++) {
+          const d = deps[i]
+          if (d.id === dep.parentId) {
+            if (d.children) {
+              d.children = d.children.concat(dep)
+              if (d.children.length > 0) {
+                d.isParent = true
+              }
+            } else if (d.children === null) {
+              d.children = []
+              d.children = d.children.concat(dep)
+              if (d.children.length > 0) {
+                d.isParent = true
+              }
+              this.initDep()
+              this.dialogVisible = false
+            }
+            return
+          } else {
+            this.addDep2Deps(d.children, dep)
           }
-          return false
-        } else {
-          this.addDep2Deps(d.children, dep)
         }
+      } else {
+        // 当 deps为空时，将其设置为空数组
+        deps = []
       }
     },
     // 手动删除dep
     deleteDep (p, deps, dep) {
-      console.log('---deps---')
-      console.log(deps)
-      console.log('---dep---')
-      console.log(dep)
       for (let i = 0; i < deps.length; i++) {
         const d = deps[i]
         if (d.id === dep.id) {
