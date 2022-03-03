@@ -2,7 +2,7 @@
  * @Description:部门管理
  * @Author: longxq
  * @Date: 2022-02-28 21:37:02
- * @LastEditTime: 2022-03-03 10:13:56
+ * @LastEditTime: 2022-03-03 12:23:38
  * @LastEditors: longxq
  * @Reference:
 -->
@@ -87,7 +87,10 @@ export default {
         parentId: -1,
         name: ''
       },
-      dialogVisible: false
+      dialogVisible: false,
+      children: [],
+      // 临时变量
+      count: 0
     }
   },
   watch: {
@@ -138,6 +141,7 @@ export default {
       this.pname = data.name
       this.depsInfo.parentId = data.id
       this.dialogVisible = true
+      this.children = data.children
     },
     /**
      * @name:添加后清空弹出框内容
@@ -161,6 +165,38 @@ export default {
      * @return {*}
      */
     doAddDep () {
+      /**
+       * @name:实现添加功能
+       * @test:
+       * @msg:判断是否children是否已经有该部门，有则提示，无则进行添加操作
+       * @param {*}
+       * @return {*}
+       */
+      const child = this.children
+      const inputInfo = this.depsInfo
+      console.log(child)
+      if (child !== null && child.length !== 0) {
+        for (let i = 0; i < child.length; i++) {
+          if (child[i].name === inputInfo.name) {
+            this.$message.error('该部门已存在,请重新输入!')
+            return
+          }
+        }
+        this.sendRequest()
+        // console.log('this.depsInfo')
+        // console.log(this.depsInfo)
+      } else {
+        this.sendRequest()
+      }
+    },
+    /**
+     * @name:发送添加请求
+     * @test:
+     * @msg:发送请求
+     * @param {*}
+     * @return {*}
+     */
+    sendRequest () {
       this.postRequest('/system/basic/department/', this.depsInfo)
         .then((res) => {
           // 将添加内容添加到deps中
@@ -223,16 +259,22 @@ export default {
     },
     // 手动删除dep
     deleteDep (p, deps, dep) {
-      for (let i = 0; i < deps.length; i++) {
-        const d = deps[i]
-        if (d.id === dep.id) {
-          deps.splice(i, 1)
-          if (deps.length === 0) {
-            p.isParent = false
+      console.log('---deps---')
+      console.log(deps)
+      if (deps !== null && deps.length) {
+        for (let i = 0; i < deps.length; i++) {
+          const d = deps[i]
+          if (d.id === dep.id) {
+            deps.splice(i, 1)
+            if (deps.length === 0) {
+              p.isParent = false
+            }
+          } else {
+            this.deleteDep(d, d.children, dep)
           }
-        } else {
-          this.deleteDep(d, d.children, dep)
         }
+      } else {
+        p.isParent = false
       }
     },
     // 删除部门
@@ -275,11 +317,9 @@ export default {
   border-radius: 10px;
 }
 .el-tree {
-  width: 400px;
-  height: 500px;
   background: var(--color1);
   border-radius: 10px;
-  padding: 4px;
+  padding: 10px;
   overflow: hidden;
 }
 .depBtn {
@@ -298,5 +338,16 @@ export default {
 }
 tr > td {
   margin: 20px;
+}
+/deep/ .el-tree-node__content {
+  &:hover {
+    background: var(--color2);
+    border-radius: 5px;
+    // background: #eff7ff;
+  }
+}
+/deep/ .el-tree-node:focus > .el-tree-node__content {
+  background-color: var(--color2);
+  border-radius: 5px;
 }
 </style>
