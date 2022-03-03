@@ -2,7 +2,7 @@
  * @Description:部门管理
  * @Author: longxq
  * @Date: 2022-02-28 21:37:02
- * @LastEditTime: 2022-03-03 11:59:56
+ * @LastEditTime: 2022-03-03 12:23:38
  * @LastEditors: longxq
  * @Reference:
 -->
@@ -317,11 +317,9 @@ export default {
   border-radius: 10px;
 }
 .el-tree {
-  width: 400px;
-  height: 500px;
   background: var(--color1);
   border-radius: 10px;
-  padding: 4px;
+  padding: 10px;
   overflow: hidden;
 }
 .depBtn {
@@ -340,5 +338,16 @@ export default {
 }
 tr > td {
   margin: 20px;
+}
+/deep/ .el-tree-node__content {
+  &:hover {
+    background: var(--color2);
+    border-radius: 5px;
+    // background: #eff7ff;
+  }
+}
+/deep/ .el-tree-node:focus > .el-tree-node__content {
+  background-color: var(--color2);
+  border-radius: 5px;
 }
 </style>
