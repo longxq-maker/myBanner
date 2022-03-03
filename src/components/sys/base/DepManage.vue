@@ -2,7 +2,7 @@
  * @Description:部门管理
  * @Author: longxq
  * @Date: 2022-02-28 21:37:02
- * @LastEditTime: 2022-03-03 00:09:28
+ * @LastEditTime: 2022-03-03 10:13:56
  * @LastEditors: longxq
  * @Reference:
 -->
@@ -165,8 +165,8 @@ export default {
         .then((res) => {
           // 将添加内容添加到deps中
           this.addDep2Deps(this.deps, res.obj)
-          console.log('res.obj')
-          console.log(res.obj)
+          // console.log('res.obj')
+          // console.log(res.obj)
           if (this.deps === null) {
             this.deps = []
           } else {
@@ -189,10 +189,10 @@ export default {
      * @return {*}
      */
     addDep2Deps (deps, dep) {
-      console.log('deps.length')
-      console.log(typeof deps)
-      console.log('---deps---')
-      console.log(deps)
+      // console.log('deps.length')
+      // console.log(typeof deps)
+      // console.log('---deps---')
+      // console.log(deps)
       if (deps !== null) {
         for (let i = 0; i < deps.length; i++) {
           const d = deps[i]
