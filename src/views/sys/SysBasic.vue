@@ -29,7 +29,7 @@ import PosManage from '../../components/sys/base/PosManage.vue'
 export default {
   data () {
     return {
-      activeName: 'PermissManage'
+      activeName: 'depManage'
     }
   },
   methods: {},
