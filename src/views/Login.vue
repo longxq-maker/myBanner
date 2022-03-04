@@ -1,4 +1,11 @@
-<!--login-->
+<!--
+ * @Description:登录页面
+ * @Author: longxq
+ * @Date: 2022-02-24 10:09:42
+ * @LastEditTime: 2022-03-04 00:56:53
+ * @LastEditors: longxq
+ * @Reference:
+-->
 <template>
   <div
     id="login"
@@ -177,7 +184,7 @@ export default {
   /**
    background: var(--bgcolorDay);
    */
-  background: var(--bgcolorDay);
+  background: url(../assets/img/bg.jpg) no-repeat;
   width: 100%;
   height: 100%;
   display: flex;
