@@ -2,7 +2,7 @@
  * @Description:基本资料
  * @Author: longxq
  * @Date: 2022-02-26 22:24:03
- * @LastEditTime: 2022-03-06 22:53:59
+ * @LastEditTime: 2022-03-07 00:11:43
  * @LastEditors: longxq
  * @Reference:
 -->
@@ -24,13 +24,33 @@
           ><i class="fa fa-angle-double-down"></i> 高级搜索</el-button
         >
       </div>
-      <div style="margin-right: 20px">
+      <div
+        style="margin-right: 20px; display: flex; flex-justify: space-around"
+      >
         <el-button type="success" @click="exportData"
           ><i class="fa fa-level-up"></i>导出数据</el-button
         >
-        <el-button type="success"
-          ><i class="fa fa-level-down"></i>导入数据</el-button
+        <el-upload
+          class="upload-demo"
+          action="/employee/basic/import"
+          :headers="header"
+          :show-file-list="false"
+          :before-upload="beforUpload"
+          :on-success="importDataSuccess"
+          :on-error="importDataFalse"
+          :limit="1"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+          :disabled="enabled"
         >
+          <el-button
+            type="success"
+            style="margin: 0 10px"
+            @click="importData"
+            :disabled="enabled"
+            ><i :class="importDataIcon"></i>{{ importDataText }}</el-button
+          >
+        </el-upload>
         <el-button type="primary" @click="addUser"
           ><i class="el-icon-plus"></i>添加员工</el-button
         >
@@ -476,6 +496,12 @@
 export default {
   data () {
     return {
+      header: {
+        Authorization: window.sessionStorage.getItem('tokenStr')
+      },
+      enabled: false,
+      importDataIcon: 'fa fa-level-down',
+      importDataText: '导入文件',
       tableData: [],
       total: 0,
       currentPage: 1,
@@ -761,6 +787,32 @@ export default {
      */
     exportData () {
       this.downloadRequest('/employee/basic/export')
+    },
+    /**
+     * @name: 导入数据
+     * @test:
+     * @msg:
+     * @param {*}
+     * @return {*}
+     */
+    importData () {},
+    beforUpload () {
+      this.importDataIcon = 'el-icon-loading'
+      this.importDataText = '正在导入..'
+      this.enabled = true
+    },
+    // 导入成功
+    importDataSuccess () {
+      this.importDataIcon = 'fa fa-level-down'
+      this.importDataText = '导入数据'
+      this.initData()
+      this.enabled = false
+    },
+    // 导入失败
+    importDataFalse () {
+      this.importDataIcon = 'fa fa-level-down'
+      this.importDataText = '导入数据'
+      this.enabled = false
     }
   }
 }

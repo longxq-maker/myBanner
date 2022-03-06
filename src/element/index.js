@@ -2,7 +2,7 @@
  * @Description:
  * @Author: longxq
  * @Date: 2022-02-24 10:09:42
- * @LastEditTime: 2022-03-05 19:36:01
+ * @LastEditTime: 2022-03-06 23:42:59
  * @LastEditors: longxq
  * @Reference:
  */
@@ -49,7 +49,8 @@ import {
   Col,
   Radio,
   DatePicker,
-  RadioGroup
+  RadioGroup,
+  Upload
 } from 'element-ui'
 
 const element = {
@@ -97,6 +98,7 @@ const element = {
     Vue.use(Radio)
     Vue.use(RadioGroup)
     Vue.use(DatePicker)
+    Vue.use(Upload)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert
     Vue.prototype.$msgbox = MessageBox
