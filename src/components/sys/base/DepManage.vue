@@ -2,7 +2,7 @@
  * @Description:部门管理
  * @Author: longxq
  * @Date: 2022-02-28 21:37:02
- * @LastEditTime: 2022-03-03 12:23:38
+ * @LastEditTime: 2022-03-05 22:05:18
  * @LastEditors: longxq
  * @Reference:
 -->
@@ -13,6 +13,7 @@
       <el-tree
         class="filter-tree"
         :data="deps"
+        default-expand-all
         :props="defaultProps"
         :filter-node-method="filterNode"
         ref="tree"

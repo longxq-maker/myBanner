@@ -1,3 +1,11 @@
+/*
+ * @Description:
+ * @Author: longxq
+ * @Date: 2022-02-23 16:44:56
+ * @LastEditTime: 2022-03-06 21:38:28
+ * @LastEditors: longxq
+ * @Reference:
+ */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -18,6 +26,9 @@ import {
   deleteRequest
 } from './api/index'
 import {
+  downloadRequest
+} from './api/download'
+import {
   initMenu
 } from './utils/menu'
 
@@ -32,12 +43,10 @@ Vue.prototype.postRequest = postRequest
 Vue.prototype.getRequest = getRequest
 Vue.prototype.putRequest = putRequest
 Vue.prototype.deleteRequest = deleteRequest
+Vue.prototype.downloadRequest = downloadRequest
 
 // 全局路由守卫
 router.beforeEach((to, from, next) => {
-  const tokenStr = window.sessionStorage.getItem('tokenStr')
-  console.log('全局导航守卫')
-  console.log(!!tokenStr)
   if (window.sessionStorage.getItem('tokenStr')) {
     initMenu(router, store)
     // 判断用户信息是否存在

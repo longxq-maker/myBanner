@@ -1,3 +1,11 @@
+/*
+ * @Description:
+ * @Author: longxq
+ * @Date: 2022-02-24 10:09:42
+ * @LastEditTime: 2022-03-05 19:36:01
+ * @LastEditors: longxq
+ * @Reference:
+ */
 import {
   Button,
   Checkbox,
@@ -37,7 +45,11 @@ import {
   Collapse,
   CollapseItem,
   Tree,
-  Card
+  Card,
+  Col,
+  Radio,
+  DatePicker,
+  RadioGroup
 } from 'element-ui'
 
 const element = {
@@ -80,6 +92,11 @@ const element = {
     Vue.use(CollapseItem)
     Vue.use(Tree)
     Vue.use(Card)
+    Vue.use(Row)
+    Vue.use(Col)
+    Vue.use(Radio)
+    Vue.use(RadioGroup)
+    Vue.use(DatePicker)
     Vue.prototype.$confirm = MessageBox.confirm
     Vue.prototype.$alert = MessageBox.alert
     Vue.prototype.$msgbox = MessageBox

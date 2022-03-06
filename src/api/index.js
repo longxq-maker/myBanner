@@ -1,3 +1,11 @@
+/*
+ * @Description:
+ * @Author: longxq
+ * @Date: 2022-02-24 17:16:36
+ * @LastEditTime: 2022-03-06 19:43:45
+ * @LastEditors: longxq
+ * @Reference:
+ */
 import axios from 'axios'
 import {
   Message
@@ -14,9 +22,6 @@ axios.interceptors.request.use(config => {
   if (window.sessionStorage.getItem('tokenStr')) {
     nprogress.start()
     config.headers.Authorization = window.sessionStorage.getItem('tokenStr')
-  } else {
-    // 不存在token 跳转到登录页面
-    router.replace('/')
   }
   return config
 }, error => {
@@ -27,7 +32,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(success => {
   nprogress.done()
   if (success.status && success.status === 200) {
-    if (success.data.code === 500 || success.data.code === 401 || success.data.code === 403) {
+    if (success.data.code === 500 || success.data.code === 403) {
       Message.error({
         message: `${success.data.message}`
       })
@@ -35,6 +40,11 @@ axios.interceptors.response.use(success => {
       Message.success({
         message: success.data.message
       })
+    } else if (success.data.code === 401) {
+      Message.error({
+        message: `${success.data.message}`
+      })
+      router.push('/')
     }
   }
   return success.data

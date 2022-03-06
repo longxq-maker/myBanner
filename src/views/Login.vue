@@ -2,7 +2,7 @@
  * @Description:登录页面
  * @Author: longxq
  * @Date: 2022-02-24 10:09:42
- * @LastEditTime: 2022-03-04 00:56:53
+ * @LastEditTime: 2022-03-04 23:03:02
  * @LastEditors: longxq
  * @Reference:
 -->
@@ -49,16 +49,13 @@
           v-model="form.code"
           placeholder="点击图片更换验证码"
           class="codeInput"
+          @keydown.enter.native="submitForm('form')"
         ></el-input
         ><img :src="picUrl" class="codePic" @click="changePic" />
       </el-form-item>
       <el-checkbox v-model="isSelected" class="remmberMe">记住我</el-checkbox>
       <el-form-item class="loginBar">
-        <el-button
-          type="primary"
-          @click="submitForm('form')"
-          @keydown.enter.native="submitForm('form')"
-          >登录</el-button
+        <el-button type="primary" @click="submitForm('form')">登录</el-button
         ><el-button @click="loginForm">注册</el-button>
       </el-form-item>
     </el-form>
